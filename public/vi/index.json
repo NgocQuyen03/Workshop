@@ -1,0 +1,92 @@
+[
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/1-introduce/",
+	"title": "Giới thiệu",
+	"tags": [],
+	"description": "",
+	"content": "🏠 Workshop: Hệ thống Gửi Email Xác Nhận Tự Động bằng AWS Workshop này hướng dẫn bạn xây dựng một hệ thống Gửi Email Xác Nhận Tự Động, được triển khai theo kiến trúc serverless sử dụng các dịch vụ chủ lực của AWS như Lambda, API Gateway, S3, SES, IAM, CloudWatch và CloudFormation. Hệ thống cho phép người dùng gửi một biểu mẫu kèm file (được mã hóa base64), hệ thống sẽ lưu trữ file vào S3 và tự động gửi email xác nhận đến người dùng với liên kết tải file.\n🔧 Trong workshop, bạn sẽ xây dựng một hệ thống serverless có khả năng:\nNhận dữ liệu từ người dùng (bao gồm tên, email và file Excel được mã hóa base64)\nTự động giải mã và lưu file vào Amazon S3\nTạo liên kết tải file (presigned URL) có thời hạn\nGửi email xác nhận đến người dùng qua Amazon SES, trong đó chứa liên kết tải file\n🎓 Bạn sẽ học được: Cách xây dựng hệ thống serverless thực tế bằng Python và AWS\nKỹ năng xử lý multipart/form-data và file base64 trong Lambda\nCách cấu hình và sử dụng Amazon SES để gửi email xác nhận\nKỹ năng sử dụng Serverless Framework để triển khai dịch vụ AWS\nQuản lý biến môi trường, quyền IAM và debug bằng CloudWatch\nHiểu được kiến trúc serverless và cách tối ưu cho hiệu suất và chi phí\n💼 Kết quả sau workshop: Hiểu cách xây dựng hệ thống serverless sử dụng AWS Lambda, API Gateway, S3 và SES.\nXử lý và lưu trữ file dạng base64, tạo link tải và gửi email xác nhận tự động.\nSử dụng Serverless Framework để triển khai nhanh, quản lý môi trường và phân quyền IAM.\nTheo dõi, ghi log và xử lý lỗi hiệu quả với CloudWatch Logs.\nSẵn sàng áp dụng mô hình cho các hệ thống thực tế như nộp đơn, tải file, gửi email xác nhận.\n"
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/",
+	"title": "Session Management",
+	"tags": [],
+	"description": "",
+	"content": "Tổng quan Trong bài lab này, bạn sẽ tìm hiểu các khái niệm cơ bản và thực hành về Amazon System Manager - Session Management. Thực hành tạo kết nối đến máy chủ public và máy chủ private trong VPC.\nNội dung Giới thiệu Các bước chuẩn bị Tạo kết nối đến máy chủ EC2 Dọn dẹp tài nguyên "
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/3-buildanddeploysystem/3.1-setup-aws-resources/",
+	"title": "Tạo tài nguyên AWS cần thiết",
+	"tags": [],
+	"description": "",
+	"content": "🎯 Mục tiêu: Chuẩn bị các tài nguyên cần thiết trên AWS để hệ thống hoạt động trơn tru.\n💡 Tips \u0026amp; Tricks:\nNếu bạn ở Việt Nam, chọn region ap-southeast-1 (Singapore) để giảm độ trễ\n🪜 Các bước thực hiện:\nTạo bucket S3: Vào AWS Console tìm S3 Chọn Create Bucket Bucket name: lambda-file-ses Các phần còn lại không chỉnh gì sau đó kéo xuống cuối trang nhấn Tạo email verified trong Amazon SES: Vào AWS Console tìm SES Sau đó vào phần Identities chọn Create Identities\nAdd mail vào và chờ đến khi Status Identity chuyển sang Verified\nSau khi tạo sẽ có 1 mail gửi đến để xác nhận email qua đường link được gửi Ghi lại thông tin: S3_BUCKET = tên bucket SES_SENDER_EMAIL = email vừa verify Gán quyền cho Lambda: Kiểm tra serverless.yml đã có quyền:\nses:SendEmail\ns3:PutObject, GetObject\nlogs:CreateLogGroup\nec2:CreateNetworkInterface\n"
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/2-prerequiste/",
+	"title": "Các bước chuẩn bị",
+	"tags": [],
+	"description": "",
+	"content": "1. Yêu cầu hệ thống Python 3.11\nNode.js ≥ 16\nAWS CLI\nTài khoản AWS có quyền tạo và cấu hình Lambda, API Gateway, S3, SES\nDocker Desktop (dùng để đóng gói dependencies cho Lambda)\nIDE: Visual Studio Code (hoặc bất kỳ editor bạn thích)\n2. Cài đặt công cụ cần thiết Cài AWS CLI macOS brew install awscli Ubuntu sudo apt install awscli Windows Tải từ AWS CLI Cấu hình AWS CLI\naws configure Nhập: Access key, secret key Region: ap-southeast-1 Format: json Cài Node.js \u0026amp; npm macOS\nbrew install node Ubuntu\nsudo apt install nodejs npm Cài Serverless Framework\nnpm install -g serverless Cài Docker (nếu chưa có) để hỗ trợ đóng gói thư viện Python Tạo virtual environment Python\npython3 -m venv .venv source .venv/bin/activate # macOS/Linux .venv\\Scripts\\activate # Windows 3. Tạo cấu trúc dự án và cài thư viện cần thiết Tạo thư mục dự án và khởi tạo serverless\nmkdir ses-mailer cd ses-mailer sls create --template aws-python --path . Tạo các file cấu trúc\nhandler.py — chứa logic nhận form, giải mã base64, lưu S3 và gửi email SES\nserverless.yml — cấu hình service, môi trường, IAM, API Gateway requirements.txt — chứa các thư viện:\nboto3 requests_toolbelt .env — định nghĩa biến môi trường:\nS3_BUCKET=my-upload-bucket SES_SENDER_EMAIL=your-verified@email.com 4. Cài đặt thư viện Python Cài đặt:\npip install -r requirements.txt "
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/3-buildanddeploysystem/3.2-implement-lambda-logic/",
+	"title": "Viết logic xử lý Lambda",
+	"tags": [],
+	"description": "",
+	"content": "🎯 Mục tiêu: Viết function Lambda để xử lý form từ người dùng, lưu file, tạo link tải và gửi email.\n💡 Tips \u0026amp; Tricks:\nDữ liệu file từ Postman sẽ là dạng multipart/form-data → cần parse thủ công\nbase64 không phải lúc nào cũng hợp lệ – nên kiểm tra trước khi decode\n🪜 Các bước thực hiện:\nTạo file handler.py trong dự án\nCài thư viện:\n- pip install requests_toolbelt boto3 -t . Xử lý lambda_handler(event, context):\nParse multipart/form-data từ body\nDecode nội dung file từ base64\nGửi lên S3 bằng boto3\nTạo presigned URL\nGửi email qua SES (boto3)\nIn log chi tiết (name, email, filename, trạng thái upload/email)\n"
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/3-buildanddeploysystem/3.3-configure-api-gateway/",
+	"title": "Cấu hình API Gateway",
+	"tags": [],
+	"description": "",
+	"content": "🎯 Mục tiêu: Định nghĩa API endpoint để gửi yêu cầu từ client (Postman, website\u0026hellip;).\n💡 Tips \u0026amp; Tricks:\nĐặt private: true để yêu cầu x-api-key\nCó thể bật CORS nếu sẽ dùng từ frontend (React, Vue,\u0026hellip;)\n🪜 Các bước thực hiện:\nMở file serverless.yml\nTrong phần functions → submitExcel → events:\nfunctions: submitExcel: handler: handler.lambda_handler events: - http: path: submit-excel method: post cors: true private: true Khai báo apiKeys và usagePlan:\napiGateway: apiKeySourceType: HEADER apiKeys: - name: SesMailerApiKey-${sls:stage} description: \u0026#34;API Key cho Lambda gửi SES\u0026#34; enabled: true usagePlan: throttle: rateLimit: 100 burstLimit: 100 quota: limit: 1000 period: MONTH "
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/3-buildanddeploysystem/",
+	"title": "Xây dựng và triển khai hệ thống",
+	"tags": [],
+	"description": "",
+	"content": "Trong bước này, chúng ta sẽ thực hiện tạo kết nối đến các máy chủ EC2 của chúng ta, nằm trong cả public và private subnet.\nNội dung 3.1. Tạo Kết nối đến máy chủ EC2 Public 3.2. Viết logic xử lý Lambda 3.3. Cấu hình API Gateway 3.4. Triển khai hệ thống lên AWS 3.5. Kiểm thử hệ thống bằng Postman 3.6. Giám sát và debug với CloudWatch Logs\n"
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/3-buildanddeploysystem/3.4-deploy-with-serverless/",
+	"title": "Triển khai hệ thống lên AWS",
+	"tags": [],
+	"description": "",
+	"content": "🎯 Mục tiêu: Đưa toàn bộ mã nguồn, cấu hình và tài nguyên lên AWS bằng Serverless Framework.\n💡 Tips \u0026amp; Tricks:\nLuôn dùng .env và plugin serverless-dotenv-plugin để quản lý biến môi trường\nNếu deploy chậm hoặc bị lỗi timeout → kiểm tra internet hoặc region\n🪜 Các bước thực hiện:\nCài plugin vào serverless.yml:\nplugins: - serverless-python-requirements - serverless-dotenv-plugin Tạo file .env:\nS3_BUCKET=auto-confirm-dev-bucket SES_SENDER_EMAIL=your_verified@email.com Triển khai bằng lệnh:\nsls deploy Ghi lại:\nAPI endpoint sau khi deploy\nAPI key nếu cần\n"
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/3-buildanddeploysystem/3.5-test-system-with-postman/",
+	"title": "Kiểm thử hệ thống bằng Postman",
+	"tags": [],
+	"description": "",
+	"content": "🎯 Mục tiêu: Gửi dữ liệu mô phỏng để kiểm tra toàn bộ luồng từ upload → gửi email.\n💡 Tips \u0026amp; Tricks:\nSử dụng form-data (không phải raw body) khi test multipart/form-data\nKiểm tra kỹ file base64 nếu dùng mã hoá → cần đảm bảo không bị lỗi khi decode\n🪜 Các bước thực hiện:\nMở Postman → New → POST Request\nURL: {API_ENDPOINT}/submit-excel\nHeaders:\nx-api-key: \u0026lt;API_KEY\u0026gt;\nContent-Type: multipart/form-data (Postman tự tạo)\nBody → raw:\nname: Nguyễn Văn A\nemail: a@example.com\nfile: file Excel bất kỳ (Postman tự mã hoá thành multipart)\nGửi request → kiểm tra email\nNếu thành công:\nNhận email xác nhận có link tải\nFile đã có trên S3\n"
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/4-cleanup/",
+	"title": "Dọn dẹp tài nguyên  ",
+	"tags": [],
+	"description": "",
+	"content": "Dọn dẹp tài nguyên AWS sau Workshop Sau khi hoàn tất workshop, bạn nên dọn dẹp các tài nguyên không còn sử dụng để tránh phát sinh chi phí và giữ tài khoản AWS gọn gàng, an toàn.\nGỡ bỏ các tài nguyên Serverless đã triển khai Nếu bạn sử dụng Serverless Framework để triển khai Lambda, S3, API Gateway:\nThực hiện lệnh:\nsls remove Lệnh này sẽ xóa toàn bộ các tài nguyên mà Serverless Framework đã tạo, bao gồm:\nAWS Lambda function\nAPI Gateway\nIAM role\nLog group (CloudWatch)\nS3 bucket (chỉ nếu được tạo qua serverless.yml)\nXoá các tài nguyên còn lại (nếu có) Một số tài nguyên bạn có thể đã tạo thủ công hoặc không nằm trong serverless.yml, hãy kiểm tra và xoá thủ công:\nS3 buckets: Kiểm tra kỹ và xóa nội dung trong bucket trước khi xóa bucket.\nSES identities:\nVào AWS SES chọn Identities\nSau đó chọn email muốn xóa chọn Delete. Chọn Confirm để hoàn tất việc xóa CloudWatch log groups:\nVào AWS CloudWatch ở thanh bên trái chọn Logs → log group.\nChọn log group muốn xóa chọn Actions → Delete log group(s) Chọn Confirm để xóa. IAM roles và policies (nếu tạo thủ công):\nTrên thanh tìm kiếm chọn IAM Chọn Roles còn xóa rồi chọn Delete Nhập lại tên Role sau đó chọn Delete Bước xóa Policies cũng thực hiện tương tự API Key (nếu có tạo trong API Gateway):\nTrên thanh công cụ tìm API Gateway Chọn API Keys Chọn API Keys muốn xóa Chọn Actions → Chọn Delete Chọn Delete để xóa. Xoá môi trường phát triển cục bộ (tuỳ chọn) Xoá thư mục dự án (todo-serverless hoặc tên khác).\nDeactivate \u0026amp; xoá virtual environment:\nWindows:\n.venv\\Scripts\\deactivate rmdir /S /Q .venv macOS/Linux:\ndeactivate rm -rf .venv Kiểm tra hoá đơn và tài nguyên tồn đọng Vào Billing \u0026gt; Cost Explorer → Kiểm tra xem có dịch vụ nào đang tính phí.\nVào AWS Resource Explorer hoặc Trusted Advisor → Xem tài nguyên còn hoạt động.\n📌 Gợi ý:\nNếu workshop chỉ mang tính thử nghiệm, bạn nên xóa cả tài khoản sandbox hoặc tạo Billing Alert để tránh phí phát sinh.\n"
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/3-buildanddeploysystem/3.6-monitor-with-cloudwatch/",
+	"title": "Giám sát và debug với CloudWatch Logs",
+	"tags": [],
+	"description": "",
+	"content": "🎯 Mục tiêu: Theo dõi hoạt động và debug lỗi của Lambda trong thực tế.\n💡 Tips \u0026amp; Tricks:\nDùng prefix [INFO], [ERROR] để lọc log dễ hơn\nCloudWatch thường có độ trễ vài giây → F5 nếu chưa thấy log\n🪜 Các bước thực hiện:\nVào AWS Console → CloudWatch → Log groups\nTìm log theo tên hàm Lambda (vd: /aws/lambda/ses-mailer-dev-submitExcel)\nKiểm tra các dòng log:\nInput nhận được\nBase64 decode thành công hay lỗi\nUpload file thành công hay lỗi\nTrạng thái gửi email\n"
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/vi/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]
