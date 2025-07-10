@@ -1,90 +1,90 @@
 [
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/3-buildanddeploysystem/3.1-setup-aws-resources/",
+	"uri": "https://ngocquyen03.github.io/Workshop/3-buildanddeploysystem/3.1-setup-aws-resources/",
 	"title": "Create Required AWS Resources",
 	"tags": [],
 	"description": "",
 	"content": "🎯 Objective: Prepare the necessary AWS resources for the system to run smoothly.\n💡 Tips \u0026amp; Tricks:\nIf you are in Vietnam, choose the ap-southeast-1 (Singapore) region to reduce latency.\n🪜 Steps:\nCreate an S3 bucket: Go to AWS Console and search for S3 Click Create Bucket Bucket name: lambda-file-ses Leave the rest as default, then scroll to the bottom and click Create Create a verified email in Amazon SES: Go to AWS Console and search for SES In the Identities section, select Create Identities\nAdd your email and wait until the Status Identity changes to Verified\nAfter creating, you will receive an email to verify via the provided link Record the information: S3_BUCKET = bucket name SES_SENDER_EMAIL = verified email Grant permissions to Lambda: Check that your serverless.yml has the following permissions:\nses:SendEmail s3:PutObject, GetObject logs:CreateLogGroup ec2:CreateNetworkInterface "
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/1-introduce/",
+	"uri": "https://ngocquyen03.github.io/Workshop/1-introduce/",
 	"title": "Introduction",
 	"tags": [],
 	"description": "",
 	"content": "🏠 Workshop: Automatic Email Confirmation System with AWS This workshop guides you in building an Automatic Email Confirmation System, deployed using a serverless architecture with core AWS services such as Lambda, API Gateway, S3, SES, IAM, CloudWatch, and CloudFormation. The system allows users to submit a form with an attached file (encoded in base64), the file will be stored in S3, and an automatic confirmation email will be sent to the user with a download link.\n🔧 In this workshop, you will build a serverless system capable of:\nReceiving user input (including name, email, and a base64-encoded Excel file)\nAutomatically decoding and storing the file in Amazon S3\nCreating a time-limited download link (presigned URL)\nSending a confirmation email to the user via Amazon SES containing the download link\n🎓 You will learn: How to build a real-world serverless system using Python and AWS\nHow to handle multipart/form-data and base64 files in Lambda\nHow to configure and use Amazon SES to send confirmation emails\nHow to use the Serverless Framework to deploy AWS services\nHow to manage environment variables, IAM permissions, and debug using CloudWatch\nUnderstand the serverless architecture and how to optimize it for performance and cost\n💼 Workshop outcomes: Understand how to build a serverless system using AWS Lambda, API Gateway, S3, and SES\nBe able to handle and store base64 files, generate download links, and send confirmation emails automatically\nDeploy quickly using the Serverless Framework, manage environments and IAM permissions effectively\nMonitor, log, and handle errors efficiently with CloudWatch Logs\nBe ready to apply this model to real-world systems like submissions, file uploads, and email confirmations\n"
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/",
+	"uri": "https://ngocquyen03.github.io/Workshop/",
 	"title": "Session Management",
 	"tags": [],
 	"description": "",
 	"content": "Overview In this lab, you will learn the basic concepts and practice with Amazon System Manager - Session Management. You will practice connecting to both public and private servers in a VPC.\nContent Introduction Preparation Steps Connect to EC2 Instances Clean up resources "
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/2-prerequiste/",
+	"uri": "https://ngocquyen03.github.io/Workshop/2-prerequiste/",
 	"title": "Preparation Steps",
 	"tags": [],
 	"description": "",
 	"content": "1. System Requirements Python 3.11 Node.js ≥ 16 AWS CLI AWS account with permissions to create and configure Lambda, API Gateway, S3, SES Docker Desktop (for packaging Lambda dependencies) IDE: Visual Studio Code (or any editor you prefer) 2. Install Required Tools Install AWS CLI macOS brew install awscli Ubuntu sudo apt install awscli Windows Download from AWS CLI Configure AWS CLI\naws configure Enter: Access key, secret key Region: ap-southeast-1 Format: json\nInstall Node.js \u0026amp; npm macOS\nbrew install node Ubuntu\nsudo apt install nodejs npm Install Serverless Framework\nnpm install -g serverless Install Docker (if not already installed) to support packaging Python libraries\nCreate a Python virtual environment\npython3 -m venv .venv source .venv/bin/activate # macOS/Linux .venv\\Scripts\\activate # Windows 3. Create Project Structure and Install Required Libraries Create the project folder and initialize serverless\nmkdir ses-mailer cd ses-mailer sls create --template aws-python --path . Create the following files:\nhandler.py — contains logic to receive the form, decode base64, save to S3, and send SES email serverless.yml — service configuration, environment, IAM, API Gateway requirements.txt — contains libraries: boto3 requests_toolbelt .env — defines environment variables: S3_BUCKET=my-upload-bucket SES_SENDER_EMAIL=your-verified@email.com 4. Install Python Libraries Install:\npip install -r requirements.txt "
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/3-buildanddeploysystem/3.2-implement-lambda-logic/",
+	"uri": "https://ngocquyen03.github.io/Workshop/3-buildanddeploysystem/3.2-implement-lambda-logic/",
 	"title": "Write Lambda Processing Logic",
 	"tags": [],
 	"description": "",
 	"content": "🎯 Objective: Write a Lambda function to process user forms, save files, generate download links, and send emails.\n💡 Tips \u0026amp; Tricks:\nFile data from Postman will be in multipart/form-data format → needs to be parsed manually\nbase64 is not always valid – you should check before decoding\n🪜 Steps:\nCreate a handler.py file in your project\nInstall libraries:\npip install requests_toolbelt boto3 -t . Handle lambda_handler(event, context):\nParse multipart/form-data from the body\nDecode the file content from base64\nUpload to S3 using boto3\nGenerate a presigned URL\nSend email via SES (boto3)\nLog details (name, email, filename, upload/email status)\n"
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/3-buildanddeploysystem/",
+	"uri": "https://ngocquyen03.github.io/Workshop/3-buildanddeploysystem/",
 	"title": "Build and Deploy the System",
 	"tags": [],
 	"description": "",
 	"content": "In this step, we will connect to our EC2 servers located in both public and private subnets.\nContent 3.1. Connect to EC2 Public Server 3.2. Write Lambda Processing Logic 3.3. Configure API Gateway 3.4. Deploy the System to AWS 3.5. Test the System with Postman 3.6. Monitor and Debug with CloudWatch Logs\n"
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/3-buildanddeploysystem/3.3-configure-api-gateway/",
+	"uri": "https://ngocquyen03.github.io/Workshop/3-buildanddeploysystem/3.3-configure-api-gateway/",
 	"title": "Configure API Gateway",
 	"tags": [],
 	"description": "",
 	"content": "🎯 Objective: Define the API endpoint to send requests from the client (Postman, website, etc.).\n💡 Tips \u0026amp; Tricks:\nSet private: true to require x-api-key You can enable CORS if you will use it from the frontend (React, Vue, \u0026hellip;)\n🪜 Steps:\nOpen the serverless.yml file\nIn the functions → submitExcel → events section:\nfunctions: submitExcel: handler: handler.lambda_handler events: - http: path: submit-excel method: post cors: true private: true Declare apiKeys and usagePlan:\napiGateway: apiKeySourceType: HEADER apiKeys: - name: SesMailerApiKey-${sls:stage} description: \u0026#34;API Key for Lambda to send SES\u0026#34; enabled: true usagePlan: throttle: rateLimit: 100 burstLimit: 100 quota: limit: 1000 period: MONTH "
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/3-buildanddeploysystem/3.4-deploy-with-serverless/",
+	"uri": "https://ngocquyen03.github.io/Workshop/3-buildanddeploysystem/3.4-deploy-with-serverless/",
 	"title": "Deploy the System to AWS",
 	"tags": [],
 	"description": "",
 	"content": "🎯 Objective: Deploy all source code, configuration, and resources to AWS using the Serverless Framework.\n💡 Tips \u0026amp; Tricks:\nAlways use .env and the serverless-dotenv-plugin to manage environment variables\nIf deployment is slow or times out → check your internet connection or region\n🪜 Steps:\nAdd plugins to serverless.yml:\nplugins: - serverless-python-requirements - serverless-dotenv-plugin Create a .env file:\nS3_BUCKET=auto-confirm-dev-bucket SES_SENDER_EMAIL=your_verified@email.com Deploy with the command:\nsls deploy Record:\nThe API endpoint after deployment The API key if needed "
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/3-buildanddeploysystem/3.5-test-system-with-postman/",
+	"uri": "https://ngocquyen03.github.io/Workshop/3-buildanddeploysystem/3.5-test-system-with-postman/",
 	"title": "Test the System with Postman",
 	"tags": [],
 	"description": "",
 	"content": "🎯 Objective: Send simulated data to test the entire flow from upload → email sending.\n💡 Tips \u0026amp; Tricks:\nUse form-data (not raw body) when testing multipart/form-data\nCheck the base64 file carefully if using encoding → make sure it can be decoded without errors\n🪜 Steps:\nOpen Postman → New → POST Request\nURL: {API_ENDPOINT}/submit-excel\nHeaders:\nx-api-key: \u0026lt;API_KEY\u0026gt;\nContent-Type: multipart/form-data (Postman will set this automatically)\nBody → raw:\nname: Nguyen Van A\nemail: a@example.com\nfile: any Excel file (Postman will encode as multipart)\nSend the request → check your email\nIf successful:\nReceive a confirmation email with a download link\nThe file is now in S3\n"
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/4-cleanup/",
+	"uri": "https://ngocquyen03.github.io/Workshop/4-cleanup/",
 	"title": "Clean up AWS resources",
 	"tags": [],
 	"description": "",
 	"content": "Clean up AWS resources after the Workshop After completing the workshop, you should clean up unused resources to avoid incurring costs and keep your AWS account tidy and secure.\nRemove deployed Serverless resources If you used the Serverless Framework to deploy Lambda, S3, API Gateway:\nRun the command:\nsls remove This command will delete all resources created by the Serverless Framework, including:\nAWS Lambda function\nAPI Gateway\nIAM role\nLog group (CloudWatch)\nS3 bucket (only if created via serverless.yml)\nDelete remaining resources (if any) Some resources may have been created manually or are not in serverless.yml, so check and delete them manually:\nS3 buckets: Carefully check and delete the contents in the bucket before deleting the bucket.\nSES identities:\nGo to AWS SES and select Identities\nThen select the email you want to delete and choose Delete. Click Confirm to complete the deletion CloudWatch log groups:\nGo to AWS CloudWatch, in the left sidebar select Logs → log group.\nSelect the log group you want to delete, choose Actions → Delete log group(s) Click Confirm to delete. IAM roles and policies (if created manually):\nIn the search bar, select IAM Select Roles to delete, then choose Delete Enter the Role name again, then choose Delete Deleting Policies is similar API Key (if created in API Gateway):\nIn the toolbar, search for API Gateway Select API Keys Select the API Keys you want to delete Choose Actions → Delete Click Delete to remove. Delete local development environment (optional) Delete the project folder (todo-serverless or another name).\nDeactivate \u0026amp; delete the virtual environment:\nWindows:\n.venv\\Scripts\\deactivate rmdir /S /Q .venv macOS/Linux:\ndeactivate rm -rf .venv Check billing and remaining resources Go to Billing \u0026gt; Cost Explorer → Check if any services are still incurring charges.\nGo to AWS Resource Explorer or Trusted Advisor → See if there are any active resources.\n📌 Suggestion:\nIf the workshop is just for testing, you should also delete the sandbox account or set up a Billing Alert to avoid unexpected charges.\n"
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/3-buildanddeploysystem/3.6-monitor-with-cloudwatch/",
+	"uri": "https://ngocquyen03.github.io/Workshop/3-buildanddeploysystem/3.6-monitor-with-cloudwatch/",
 	"title": "Monitor and Debug with CloudWatch Logs",
 	"tags": [],
 	"description": "",
 	"content": "🎯 Objective: Monitor activity and debug Lambda errors in practice.\n💡 Tips \u0026amp; Tricks:\nUse [INFO], [ERROR] prefixes to filter logs more easily\nCloudWatch usually has a few seconds delay → refresh if you don\u0026rsquo;t see logs yet\n🪜 Steps:\nGo to AWS Console → CloudWatch → Log groups\nFind logs by Lambda function name (e.g., /aws/lambda/ses-mailer-dev-submitExcel)\nCheck the log lines:\nInput received\nBase64 decode success or error\nFile upload success or error\nEmail sending status\n"
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/categories/",
+	"uri": "https://ngocquyen03.github.io/Workshop/categories/",
 	"title": "Categories",
 	"tags": [],
 	"description": "",
 	"content": ""
 },
 {
-	"uri": "https://github.com/NgocQuyen03/FCJ-Workshop/tags/",
+	"uri": "https://ngocquyen03.github.io/Workshop/tags/",
 	"title": "Tags",
 	"tags": [],
 	"description": "",
